@@ -1,0 +1,135 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login & Signup - Moving Eye</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&family=Righteous&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: url('https://images.pexels.com/photos/365633/pexels-photo-365633.jpeg') no-repeat center center/cover;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Allow vertical stacking of elements */
+        }
+
+        .heading {
+            font-family: Georgia, serif; /* Changed font to Georgia */
+            font-size: 48px; /* Adjust size as needed */
+            color: #FFD700; /* Gold color for the heading */
+            margin-bottom: 20px; /* Space between heading and form */
+        }
+
+        .glass-form {
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+            width: 300px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
+            text-align: center;
+        }
+
+        .glass-form h2 {
+            color: #FFD700;
+            margin-bottom: 20px;
+        }
+
+        .glass-form input {
+            width: 100%;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-radius: 4px;
+            outline: none;
+            background: rgba(255, 255, 255, 0.2);
+            color: #fff;
+        }
+
+        .glass-form button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 4px;
+            background-color: #5A67D8;
+            color: #fff;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .glass-form button:hover {
+            background-color: #6A75ED;
+        }
+
+        .toggle-link {
+            color: #FFD700;
+            cursor: pointer;
+            margin-top: 10px;
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="heading">Moving Eye</div> <!-- Added heading here -->
+    <div class="glass-form" id="authForm">
+        <h2 id="formTitle">Login</h2>
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="password" id="password" placeholder="Password" required>
+        <button onclick="handleAuth()">Login</button>
+        <span class="toggle-link" onclick="toggleForm()">Don't have an account? Sign Up</span>
+    </div>
+
+    <script>
+        let isLogin = true;
+
+        function toggleForm() {
+            isLogin = !isLogin;
+            document.getElementById('formTitle').textContent = isLogin ? 'Login' : 'Sign Up';
+            document.querySelector('button').textContent = isLogin ? 'Login' : 'Sign Up';
+            document.querySelector('.toggle-link').textContent = isLogin ? "Don't have an account? Sign Up" : 'Already have an account? Login';
+        }
+
+        function handleAuth() {
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (!username || !password) {
+                alert('Please fill in both fields.');
+                return;
+            }
+
+            const userData = JSON.parse(localStorage.getItem('userData')) || {};
+
+            if (isLogin) {
+                // Login logic
+                if (userData[username] && userData[username] === password) {
+                    alert('Login successful!');
+                    window.location.href = 'Base.html'; // Redirect to the main page
+                } else {
+                    alert('Invalid username or password.');
+                }
+            } else {
+                // Sign up logic
+                if (userData[username]) {
+                    alert('Username already exists.');
+                } else {
+ userData[username] = password;
+                    localStorage.setItem('userData', JSON.stringify(userData));
+                    alert('Sign up successful! You can now log in.');
+                    toggleForm(); // Switch back to login form
+                }
+            }
+        }
+    </script>
+</body>
+</html>
